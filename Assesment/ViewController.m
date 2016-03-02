@@ -136,15 +136,21 @@
     [self _showHudDisplayWithMessage:@"Searching..."];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *dataArray = [NSJSONSerialization JSONObjectWithData:responseObject options:0 error:nil];
+        
+        NSLog(@"%@",dataArray);
+        
         if (dataArray && dataArray.count > 0) {
             weakSelf.dataDictionary = dataArray[0];
             [weakSelf.tableView reloadData];
-            [self _hideHudDisplay];
+            [weakSelf _hideHudDisplay];
+        }else{
+            [weakSelf _hideHudDisplay];
+            [weakSelf _showAlertWithMessage:@"Acronym not found"];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
-        [self _hideHudDisplay];
-        [self _showAlertWithMessage:[NSString stringWithFormat:@"Network issue: %@",error.description]];
+        [weakSelf _hideHudDisplay];
+        [weakSelf _showAlertWithMessage:[NSString stringWithFormat:@"Network issue: %@",error.description]];
     }];
     [[NSOperationQueue mainQueue] addOperation:op];
 
