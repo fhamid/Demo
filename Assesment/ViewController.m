@@ -87,7 +87,7 @@
 
 
 - (IBAction)searchAction:(id)sender{
-    
+    [self.view endEditing:YES];
     if (![self.textField.text isEqualToString:@""]) {
         self.shortForm = [self.textField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
         [self _fetchData];
@@ -103,7 +103,6 @@
 }
 - (void)_hideHudDisplay{
     [self.hud hideAnimated:YES];
-    [self.view endEditing:YES];
     
 }
 
